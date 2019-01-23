@@ -6,20 +6,7 @@
     <meta name="description" content="Sample illustrating the use of Web Bluetooth / Get Characteristics.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
-    <title>Web Bluetooth / Get Characteristics Sample</title>
-    <script async="" src="./ble_files/analytics.js.下載"></script><script>
-      // Add a global error event listener early on in the page load, to help ensure that browsers
-      // which don't support specific functionality still end up displaying a meaningful message.
-      window.addEventListener('error', function(error) {
-        if (ChromeSamples && ChromeSamples.setStatus) {
-          console.error(error);
-          ChromeSamples.setStatus(error.message + ' (Your browser may not support this feature.)');
-          error.preventDefault();
-        }
-      });
-    </script>
-    
-    
+    <title>Web Bluetooth Sample</title>
     
     <link rel="icon" href="./ble_files/icon.png">
     
@@ -30,16 +17,7 @@
 
   <body>
     <img class="pageIcon" src="./ble_files/icon.png">
-    <h1>Web Bluetooth / Get Characteristics Sample</h1>
-    <p class="availability">
-      Available in <a target="_blank" href="https://www.chromestatus.com/feature/5264933985976320">Chrome 50+</a> |
-      <a target="_blank" href="https://github.com/googlechrome/samples/blob/gh-pages/web-bluetooth/get-characteristics.html">View on GitHub</a> |
-      <a href="https://googlechrome.github.io/samples/web-bluetooth/index.html">Browse Samples</a>
-    </p>
-    <p>The <a href="https://developers.google.com/web/updates/2015/07/interact-with-ble-devices-on-the-web">Web Bluetooth
-  API</a> lets websites discover and communicate with devices over the
-Bluetooth 4 wireless standard using the Generic Attribute Profile (GATT). It is
-currently partially implemented in Android M, Chrome OS, Linux, and Mac.</p>
+    <h1>Web Bluetooth Sample</h1>
 
 <script>
   if('serviceWorker' in navigator) {
@@ -87,14 +65,6 @@ currently partially implemented in Android M, Chrome OS, Linux, and Mac.</p>
     });
   });
 </script>
-
-
-<p>This sample illustrates the use of the Web Bluetooth API to get all
-characteristics of an advertised service from a nearby Bluetooth Low Energy
-Device. You may want to try this demo with the BLE Peripheral Simulator App
-from the <a target="_blank" href="https://play.google.com/store/apps/details?id=io.github.webbluetoothcg.bletestperipheral">Google
-Play Store</a> and check out the <a href="https://googlechrome.github.io/samples/web-bluetooth/get-characteristics-async-await.html">Get
-Characteristics (Async Await)</a> sample.</p>
 
 <form>
   <input id="service" type="text" list="services" autofocus="" placeholder="Bluetooth Service">
@@ -347,10 +317,6 @@ Characteristics (Async Await)</a> sample.</p>
     }
   }
 </script>
-
-
-
-
   
     
       <script>function onButtonClick() {
@@ -392,55 +358,6 @@ Characteristics (Async Await)</a> sample.</p>
   });
 }
 </script>
-    
-  
-
-  
-    <h3>JavaScript Snippet</h3>
-  
-
-  
-    <figure class="highlight"><pre><code class="language-js" data-lang="js"><span class="kd">function</span> <span class="nx">onButtonClick</span><span class="p">()</span> <span class="p">{</span>
-  <span class="kd">let</span> <span class="nx">serviceUuid</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">'#service'</span><span class="p">).</span><span class="nx">value</span><span class="p">;</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nx">serviceUuid</span><span class="p">.</span><span class="nx">startsWith</span><span class="p">(</span><span class="s1">'0x'</span><span class="p">))</span> <span class="p">{</span>
-    <span class="nx">serviceUuid</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">serviceUuid</span><span class="p">);</span>
-  <span class="p">}</span>
-
-  <span class="kd">let</span> <span class="nx">characteristicUuid</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="s1">'#characteristic'</span><span class="p">).</span><span class="nx">value</span><span class="p">;</span>
-  <span class="k">if</span> <span class="p">(</span><span class="nx">characteristicUuid</span><span class="p">.</span><span class="nx">startsWith</span><span class="p">(</span><span class="s1">'0x'</span><span class="p">))</span> <span class="p">{</span>
-    <span class="nx">characteristicUuid</span> <span class="o">=</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">characteristicUuid</span><span class="p">);</span>
-  <span class="p">}</span>
-
-  <span class="nx">log</span><span class="p">(</span><span class="s1">'Requesting Bluetooth Device...'</span><span class="p">);</span>
-  <span class="nb">navigator</span><span class="p">.</span><span class="nx">bluetooth</span><span class="p">.</span><span class="nx">requestDevice</span><span class="p">({</span><span class="na">filters</span><span class="p">:</span> <span class="p">[{</span><span class="na">services</span><span class="p">:</span> <span class="p">[</span><span class="nx">serviceUuid</span><span class="p">]}]})</span>
-  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">device</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">log</span><span class="p">(</span><span class="s1">'Connecting to GATT Server...'</span><span class="p">);</span>
-    <span class="k">return</span> <span class="nx">device</span><span class="p">.</span><span class="nx">gatt</span><span class="p">.</span><span class="nx">connect</span><span class="p">();</span>
-  <span class="p">})</span>
-  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">server</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">log</span><span class="p">(</span><span class="s1">'Getting Service...'</span><span class="p">);</span>
-    <span class="k">return</span> <span class="nx">server</span><span class="p">.</span><span class="nx">getPrimaryService</span><span class="p">(</span><span class="nx">serviceUuid</span><span class="p">);</span>
-  <span class="p">})</span>
-  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">service</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">log</span><span class="p">(</span><span class="s1">'Getting Characteristics...'</span><span class="p">);</span>
-    <span class="k">if</span> <span class="p">(</span><span class="nx">characteristicUuid</span><span class="p">)</span> <span class="p">{</span>
-      <span class="c1">// Get all characteristics that match this UUID.</span>
-      <span class="k">return</span> <span class="nx">service</span><span class="p">.</span><span class="nx">getCharacteristics</span><span class="p">(</span><span class="nx">characteristicUuid</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="c1">// Get all characteristics.</span>
-    <span class="k">return</span> <span class="nx">service</span><span class="p">.</span><span class="nx">getCharacteristics</span><span class="p">();</span>
-  <span class="p">})</span>
-  <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="nx">characteristics</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">log</span><span class="p">(</span><span class="s1">'&gt; Characteristics: '</span> <span class="o">+</span>
-      <span class="nx">characteristics</span><span class="p">.</span><span class="nx">map</span><span class="p">(</span><span class="nx">c</span> <span class="o">=&gt;</span> <span class="nx">c</span><span class="p">.</span><span class="nx">uuid</span><span class="p">).</span><span class="nx">join</span><span class="p">(</span><span class="s1">'</span><span class="err">\</span><span class="s1">n'</span> <span class="o">+</span> <span class="s1">' '</span><span class="p">.</span><span class="nx">repeat</span><span class="p">(</span><span class="mi">19</span><span class="p">)));</span>
-  <span class="p">})</span>
-  <span class="p">.</span><span class="k">catch</span><span class="p">(</span><span class="nx">error</span> <span class="o">=&gt;</span> <span class="p">{</span>
-    <span class="nx">log</span><span class="p">(</span><span class="s1">'Argh! '</span> <span class="o">+</span> <span class="nx">error</span><span class="p">);</span>
-  <span class="p">});</span>
-<span class="p">}</span></code></pre></figure>
-  
-
-
 
 <script>
   document.querySelector('form').addEventListener('submit', function(event) {
